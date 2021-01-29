@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+function App () {
+  const styled = {
+    div: (styles, ...values) => {
+      console.log(styles)
+      console.log(values)
+      const evaluted = styles.reduce((acc, curStr, i) => {
+        acc.push(curStr)
+        if (values[i]) {
+          acc.push(values[i].toString())
+        }
+        return acc
+      }, [])
+      console.log(evaluted)
+      console.log(evaluted.join(''))
+    }
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const fakeColor = 'red'
+
+  // const Nav = styled.div`
+  //   color: ${fakeColor};
+  //   background-color: red;
+  //   border-radius: ${1}px;
+  // `
+
+  console.log(styled.div`
+    color: ${fakeColor};
+    background-color: red;
+    border-radius: ${1}px;
+  `)
+
+  return <div className='App'>min styled component</div>
 }
 
-export default App;
+export default App
