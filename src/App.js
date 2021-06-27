@@ -1,56 +1,49 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 function App () {
+  const [isClicked, setIsClicked] = useState(false)
   const styled = {
     div: (styles, ...values) => {
-      console.log(styles)
-      const styleStrings = styles.reduce((accum, curStyle, i) => {
-        accum.push(curStyle)
-        if (values[i]) {
-          accum.push(values[i].toString())
-        }
-        return accum
-      }, [])
-
-      // styleStrings.join('')
-
       return function NewComponent (props) {
+        const styleStrings = styles.reduce((accum, curStyle, i) => {
+          accum.push(curStyle)
+          // console.log(values)
+          if (values[i]) {
+            const isFunc = typeof values[i] === 'function'
+            const value = isFunc ? values[i](props) : values[i]
+            // console.log(value)
+            accum.push(value.toString())
+          }
+
+          return accum
+        }, [])
+
         const divRef = useRef(null)
 
         useEffect(() => {
-          divRef.current.setAttribute('style', styleStrings)
-        }, [])
-
-        // const className = 'abc'
-        // className을 주입해주고
-        // html style tag에 해당 style을 추가해줌
-        // https://medium.com/@_jmoller/how-does-styled-components-work-under-the-hood-28cb035d48c6
-        return <div ref={divRef}>{props.children}</div>
+          divRef.current.setAttribute('style', styleStrings.join(''))
+        }, [styleStrings])
+        return <div ref={divRef} {...props} />
       }
     }
   }
 
-  const fakeColor = 'blue'
-
-  // const Nav = styled.div`
-  //   color: ${fakeColor};
-  //   background-color: red;
-  //   border-radius: ${1}px;
-  // `
-
-  // console.log(styled.div`
-  //   color: ${fakeColor};
-  //   background-color: red;
-  //   font-weight: 400;
-  // `)
+  const fakeColor = 'yellow'
 
   const StyledDIV = styled.div`
-    color: ${fakeColor};
-    background-color: red;
+    width: 100px;
+    color: ${props => (props.isClicked ? 'blue' : 'red')};
+    background-color: ${fakeColor};
+    border-radius: 5px;
     font-weight: 400;
+    cursor: pointer;
   `
 
-  return <StyledDIV>min styled component</StyledDIV>
+  return (
+    <StyledDIV onClick={() => setIsClicked(st => !st)} isClicked={isClicked}>
+      min styled component
+    </StyledDIV>
+  )
 }
 
 export default App
