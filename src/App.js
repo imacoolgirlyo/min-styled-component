@@ -11,12 +11,14 @@ function App () {
           if (values[i]) {
             const isFunc = typeof values[i] === 'function'
             const value = isFunc ? values[i](props) : values[i]
-            // console.log(value)
+            console.log(value.toString())
             accum.push(value.toString())
           }
 
           return accum
         }, [])
+
+        console.log(styleStrings) // styleStrings을 바로 넣어도(array type) style이 적용되네;
 
         const divRef = useRef(null)
 
