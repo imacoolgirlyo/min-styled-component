@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 function App () {
   const styled = {
@@ -15,11 +15,17 @@ function App () {
       // styleStrings.join('')
 
       return function NewComponent (props) {
+        const divRef = useRef(null)
+
+        useEffect(() => {
+          divRef.current.setAttribute('style', styleStrings)
+        }, [])
+
         // const className = 'abc'
         // className을 주입해주고
         // html style tag에 해당 style을 추가해줌
         // https://medium.com/@_jmoller/how-does-styled-components-work-under-the-hood-28cb035d48c6
-        return <div styles={styleStrings.join('')}>{props.children}</div>
+        return <div ref={divRef}>{props.children}</div>
       }
     }
   }
